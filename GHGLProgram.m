@@ -114,9 +114,17 @@
   if (logLength > 0) {
     GLchar *log = (GLchar *)malloc(logLength);
     glGetShaderInfoLog(*shader, logLength, &logLength, log);
-    GHGLDebug(@"%@:\n\n%@\n\n", file, source);
+    GHGLDebug(@"%@:\n\n", file);
+    
+    int lineNumber = 1;
+    for (NSString *line in [source componentsSeparatedByString:@"\n"]) {
+      GHGLDebug(@"%d: %@\n", lineNumber, line);
+      lineNumber++;
+    }
+    
     GHGLError(@"Shader compile log:\n%s", log);
     free(log);
+    //[NSException raise:NSGenericException format:@"Shader compile error"];
   }
 #endif
   
